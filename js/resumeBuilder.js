@@ -89,7 +89,7 @@ var work = {
             "dates": "1987  - 1987",
             "employer": "University of California, San Diego",
             "description": "Performed system administration duties and provided user technical support for the Department of Electrical Engineering and Computer Science",
-            "city": "San Diego CA"
+            "city": "San Diego, CA"
         },
         {
             "title": "Programmer Analyst",
@@ -97,7 +97,7 @@ var work = {
             "employer": "System Development Corporation",
             "description": "Designed and wrote compilers for an automated software engineering testing system under a contract with the US Air Force",
             "city": "Santa Monica, CA"
-        },
+        }
     ]
 };
 
@@ -107,31 +107,25 @@ var projects = {
             "title": "Fly By Wire -- Towards a Post-Furby metamorphosis",
             "dates": "Nov 2012 - Dec 2012",
             "description": "'Fly By Wire -- Towards a Post-Furby metamorphosis' is part of a group show, VOLATILIA, curated my Myrtle von Damitz III, at Barrister's Gallery in New Orleans. 'Fly By Wire' features 1999 era Furbies whose tactile sensor are connected to the internet and who interact with the gallery patrons via twitter and text messaging.",
-            "images": [ "http://placehold.it/300x200" ]
+            "images": [ "images/FlyByWire.png" ]
         },
         {
             "title": "Sirens",
             "dates": "Aug 2011 - Sep 2011",
             "description": "'Sirens', created by Gumbo Labs, was a installation appearing in ‘A Technological Terrarium,’ curated by Myrtle Von Damitz, at the Ogden Museum of Southern Art.",
-            "images": [ "http://placehold.it/300x200" ]
+            "images": [ "images/Sirens.png" ]
         },
         {
             "title": "Anternet",
             "dates": "Apr 2011",
             "description": "'Anternet' was a Bio-Art piece in the 2011 Automata show. The piece involved tracking the movement of ants through an ant farm and posted messages on a social network in response to their motion.",
-            "images": [ "http://placehold.it/300x200" ]
-        },
-        {
-            "title": "Elastic CD-Rom Twitter Table",
-            "dates": "Jul 2010 - Aug 2010",
-            "description": "The installation was an interactive kinetic sculpture capable of displaying three characters. Each character was formed by seven CD-Rom drives pushing against fabric. It showed the latest tweet containing 'BarCampNOLA' in a side-scrolling fashion, three letters at a time.",
-            "images": [ "http://placehold.it/300x200" ]
+            "images": [ "images/Anternet.png" ] 
         },
         {
             "title": "'Orpheus Descending' -- DesCours 2009",
             "dates": "Dec 2009",
             "description": "'Orpheus Descending' by Jimmy Stamp, Sergio Padilla, Frederick Stivers (NO/other) and Gumbo Labs, part of DesCours 2009 Installation series sponsored by the New Orleans Chapter of the American Institute of Architects.",
-            "images": [ "http://placehold.it/300x200" ]
+            "images": [ "images/OrpheusDescending.png" ] 
         }
     ]
 };
@@ -139,7 +133,12 @@ var projects = {
 var bio = {
     "name": "Mark Anderson",
     "role": "Front End Developer",
-    "contact info": "877-240-5431",
+    "contacts": { 
+        "phone": "877-240-5431",
+        "email": "fend.udacity.com@ma7.org",
+        "github": "Mark70117",
+        "city": "New Orleans, LA"
+    },
     "bioPic": "https://dl.dropboxusercontent.com/u/3514030/MarkA.jpg",
     "welcomeMsg": "Hey, get off my lawn!",
     "skills": [
@@ -255,11 +254,19 @@ function insertInto(helper, replacementString) {
 }
 
 bio.display = function() {
-    // TODO: contact info
-    $("#header").prepend(insertInto(HTMLwelcomeMsg, bio.welcomeMsg));
-    $("#header").prepend(insertInto(HTMLbioPic, bio.bioPic));
     $("#header").prepend(insertInto(HTMLheaderRole, bio.role));
     $("#header").prepend(insertInto(HTMLheaderName, bio.name));
+
+   for (contact in bio.contacts) {
+        var theContact = bio.contacts[contact];
+        var formattedContact = insertInto(HTMLcontactGeneric, theContact).replace("%contact%", contact);
+        $("#topContacts").append(formattedContact);
+        $("#footerContacts").append(formattedContact);
+    }
+    
+    $("#header").append(insertInto(HTMLbioPic, bio.bioPic));
+    $("#header").append(insertInto(HTMLwelcomeMsg, bio.welcomeMsg));
+
     if (bio.skills.length >0 ) {
         $("#header").append(HTMLskillsStart);
         for (skill in bio.skills) {
@@ -269,7 +276,6 @@ bio.display = function() {
         }
     }
 }
-
 
 work.display = function() {
     for (job in work.jobs) {
@@ -351,5 +357,5 @@ work.display();
 projects.display();
 education.display();
 
-// TODO: get Map working
 $("#mapDiv").append(googleMap);
+
